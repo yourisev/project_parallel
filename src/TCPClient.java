@@ -62,7 +62,7 @@ public class TCPClient {
                     if (fromServer.equals("Bye.")) // exit statement
                         break;
 
-                    else if(fromServer.split(" ")[0].equals("accept")){
+                    else if(fromServer.split(",")[0].equals("accept")){
                         PeerServerThread thread = new PeerServerThread(5558, fromServer.split(" ")[1]); // creates a thread with a random port
                         thread.start();
                         continue;
@@ -78,8 +78,8 @@ public class TCPClient {
                     }
                 }
             }
-        }else  if (fromServer.split(" ")[0].equals("accept")) {
-           PeerClientThread thread = new PeerClientThread(5558, fromServer.split(" ")[1]); // creates a thread with a random port
+        }else  if (fromServer.split(",")[0].equals("accept")) {
+           PeerClientThread thread = new PeerClientThread(5558, fromServer.split(",")[1]); // creates a thread with a random port
            thread.start();
        }
 

@@ -44,17 +44,17 @@ public class SThread extends Thread {
                         System.out.println("Server Router said: " + message);
                         String[] messageArray = message.split(",");
                         if (!inRoutingTable(messageArray[0], RTable, outTo)) {
-                            System.out.println("Destination: " + destination + " not found");
-                            System.out.println("Connection cannot be established "); //+ routerName);
+                            System.out.println("Destination: " + messageArray[0] + " not found");
+                            System.out.println("Connection could not be established "); //+ routerName);
                             outSocket = searchDevice(messageArray[1], RTable);
                             outTo = new PrintWriter(outSocket.getOutputStream(), true); // assigns a writer
                             outTo.println("false," + outSocket.getInetAddress().getHostAddress());// Forward back unsuccessful message to next server router
                             continue;
                         }
-                        outTo.println("accept " + messageArray[1]);// Forward back connection message to server device
+                        outTo.println("accept," + messageArray[1]);// Forward back connection message to server device
                         outSocket = searchDevice(messageArray[1], RTable);
                         outTo = new PrintWriter(outSocket.getOutputStream(), true); // assigns a writer
-                        outTo.println("accept " + outSocket.getInetAddress().getHostAddress());// Forward back unsuccessful message to next server router
+                        outTo.println("accept," + messageArray[0]);// Forward back unsuccessful message to next server router
 
                     }// end while
                 }
@@ -79,7 +79,7 @@ public class SThread extends Thread {
 
                 if (!inRoutingTable(destination, RTable, outTo)) {
                     System.out.println("Destination: " + destination + " not found");
-                    System.out.println("Forwarding to next server router "); //+ routerName);
+                    System.out.println("Forwarding to next server router: "+ nextRouterIP);
                     outSocket = searchDevice(nextRouterIP, RTable);
                     outTo = new PrintWriter(outSocket.getOutputStream(), true); // assigns a writer
                     outTo.println(destination + "," + toTheClient.getInetAddress().getHostAddress());// Forward destination address to Server Router

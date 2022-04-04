@@ -44,7 +44,7 @@ public class TCPServer {
             System.out.println("Client said: " + fromClient);
             if (fromClient.equals("Bye.")) // exit statement
                 break;
-            else if(fromClient.split(" ")[0].equals("accept")){
+            else if(fromClient.split(",")[0].equals("accept")){
                 PeerServerThread thread = new PeerServerThread(5558, fromClient.split(" ")[1]); // creates a thread with a random port
                 thread.start();
                 continue;
