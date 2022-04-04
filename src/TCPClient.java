@@ -49,10 +49,7 @@ public class TCPClient {
         out.println(address);// initial send (IP of the destination Server)
         fromServer = in.readLine();//initial receive from router (verification of connection)
 
-        if (fromServer.equals("accept")) {
-            PeerClientThread thread = new PeerClientThread(5558, fromServer); // creates a thread with a random port
-            thread.start();
-        } else if (fromServer.equals("Connected to the router.")) {
+       if (fromServer.equals("Connected to the router.")) {
             System.out.println("ServerRouter: " + fromServer);
             out.println(host); // Client sends the IP of its machine as initial send
             t0 = System.currentTimeMillis();
@@ -81,7 +78,10 @@ public class TCPClient {
                     }
                 }
             }
-        }
+        }else  if (fromServer.split(" ")[0].equals("accept")) {
+           PeerClientThread thread = new PeerClientThread(5558, fromServer.split(" ")[1]); // creates a thread with a random port
+           thread.start();
+       }
 
         // closing connections
         out.close();

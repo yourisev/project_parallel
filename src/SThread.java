@@ -52,6 +52,9 @@ public class SThread extends Thread {
                             continue;
                         }
                         outTo.println("accept " + messageArray[1]);// Forward back connection message to server device
+                        outSocket = searchDevice(messageArray[1], RTable);
+                        outTo = new PrintWriter(outSocket.getOutputStream(), true); // assigns a writer
+                        outTo.println("accept " + outSocket.getInetAddress().getHostAddress());// Forward back unsuccessful message to next server router
 
                     }// end while
                 }
