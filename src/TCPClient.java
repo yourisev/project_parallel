@@ -81,6 +81,8 @@ public class TCPClient {
         }else  if (fromServer.split(",")[0].equals("accept")) {
            PeerClientThread thread = new PeerClientThread(5558, fromServer.split(",")[1]); // creates a thread with a random port
            thread.start();
+       }else{
+           System.out.println("No computer exist with IP address: " + address);
        }
 
         // closing connections
