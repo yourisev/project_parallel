@@ -63,7 +63,7 @@ public class TCPClient {
                         break;
 
                     else if(fromServer.split(",")[0].equals("accept")){
-                        PeerServerThread thread = new PeerServerThread(5558, fromServer.split(" ")[1]); // creates a thread with a random port
+                        PeerServerThread thread = new PeerServerThread(5558, fromServer.split(",")[1]); // creates a thread with a random port
                         thread.start();
                         continue;
                     }

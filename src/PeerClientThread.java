@@ -30,7 +30,7 @@ public class PeerClientThread extends Thread {
 
 
             // Variables for message passing
-            Reader reader = new FileReader("C:\\Users\\Kouede Loic\\Desktop\\file.txt");
+            Reader reader = new FileReader("C:\\Users\\Kouede Loic\\Desktop\\file.txt");//Modify
             BufferedReader fromFile = new BufferedReader(reader); // reader for the string file
             String fromPeerServer; // messages received from peer server
             String toPeerServer; // messages sent to peer server
