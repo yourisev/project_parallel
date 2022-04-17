@@ -76,8 +76,10 @@ public class SThread extends Thread {
                 }
 
 
+                //Search destination in routing table
+                outSocket = searchDevice(destination, RTable,ind);
 
-                if (searchDevice(destination, RTable,ind) == null) {
+                if (outSocket == null) {
                     System.out.println("Destination: " + destination + " not found");
                     System.out.println("Forwarding to next server router: "+ nextRouterIP);
                     outSocket = searchDevice(nextRouterIP, RTable,ind);
@@ -86,7 +88,7 @@ public class SThread extends Thread {
 
                 }else{
                     //Writing to Destination
-                    outSocket = searchDevice(destination, RTable,ind);
+                    //outSocket = searchDevice(destination, RTable,ind);
                     outTo = new PrintWriter(outSocket.getOutputStream(), true); // assigns a writer
                     outTo.println(toTheClient.getInetAddress().getHostAddress());
                 }
@@ -150,7 +152,7 @@ public class SThread extends Thread {
         Socket outSocket = null;
         // loops through the routing table to find the device
         for (int i = 0; i <= index; i++) {
-            if (ipAddress.equals((String) RoutingTable[i][0])) {
+            if (ipAddress.equals(RoutingTable[i][0])) {
                 outSocket = (Socket) RoutingTable[i][1]; // gets the socket for communication from the table
 
                 break;
