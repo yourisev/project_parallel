@@ -45,8 +45,8 @@ public class TCPServer {
             if (fromClient.equals("Bye.")) // exit statement
                 break;
             else if(fromClient.split(",")[0].equals("accept")){
-                TCPPeerServer thread = new TCPPeerServer(5558, fromClient.split(",")[1]); // creates a thread with a random port
-                thread.start();
+//                TCPPeerServer thread = new TCPPeerServer(5558, fromClient.split(",")[1]); // creates a thread with a random port
+//                thread.start();
                 continue;
             }
             fromServer = fromClient.toUpperCase(); // converting received message to upper case

@@ -89,6 +89,7 @@ public class SThread extends Thread {
                 }else{
                     //Writing to Destination
                     //outSocket = searchDevice(destination, RTable,ind);
+                    System.out.println("Found destination: " + destination);
                     outTo = new PrintWriter(outSocket.getOutputStream(), true); // assigns a writer
                     outTo.println(toTheClient.getInetAddress().getHostAddress());
                 }
@@ -151,7 +152,9 @@ public class SThread extends Thread {
     public static Socket searchDevice(String ipAddress, Object[][] RoutingTable, int index) throws IOException {
         Socket outSocket = null;
         // loops through the routing table to find the device
-        for (int i = 0; i <= index; i++) {
+        for (int i = 1; i <= 10; i++) {
+            System.out.println("Sthread - Index " + index);
+            System.out.println("Ip address:" + RoutingTable[i][0] + "at index " + i);
             if (ipAddress.equals(RoutingTable[i][0])) {
                 outSocket = (Socket) RoutingTable[i][1]; // gets the socket for communication from the table
 

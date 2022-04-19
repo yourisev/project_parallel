@@ -3,6 +3,7 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Timer;
 
 public class TCPPeerServer extends Thread {
     public static void main(String[] args) throws IOException {
@@ -31,7 +32,7 @@ public class TCPPeerServer extends Thread {
         // Variables for message passing
         String fromServer; // messages sent to ServerRouter
         String fromClient; // messages received from ServerRouter
-        String address = "192.168.137.103"; // destination IP (Client)--Modify
+        String address = "192.168.137.210"; // destination IP (Client)--Modify
 
         final int SOCKET_PORT = 13267;      // you may change this
         final String SERVER = "127.0.0.1";  // localhost
@@ -59,6 +60,11 @@ public class TCPPeerServer extends Thread {
             }
         }
 
+//        Thread t = new Thread(new LongRunningTask());
+//        Timer timer = new Timer();
+//        timer.schedule(new TimeOutTask(t, timer), 300*1000);
+//        t.start();
+
         if (foundDestination) {
             int bytesRead;
             int current = 0;
@@ -66,7 +72,7 @@ public class TCPPeerServer extends Thread {
             BufferedOutputStream bos = null;
             Socket sock = null;
             try {
-                sock = new Socket(SERVER, SOCKET_PORT);
+                sock = new Socket(address, SOCKET_PORT);
                 System.out.println("Connecting...");
 
                 // receive file
@@ -92,7 +98,7 @@ public class TCPPeerServer extends Thread {
                 if (bos != null) bos.close();
                 if (sock != null) sock.close();
             }
-        }
+       }
 
 //        while (Running){
 //            // Communication while loop
@@ -112,6 +118,7 @@ public class TCPPeerServer extends Thread {
 
 
         // closing connections and streams
+        System.out.println("Closing connections...");
         out.close();
         in.close();
         Socket.close();

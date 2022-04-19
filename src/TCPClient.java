@@ -63,8 +63,8 @@ public class TCPClient {
                         break;
 
                     else if(fromServer.split(",")[0].equals("accept")){
-                        TCPPeerServer thread = new TCPPeerServer(5558, fromServer.split(",")[1]); // creates a thread with a random port
-                        thread.start();
+//                        TCPPeerServer thread = new TCPPeerServer(5558, fromServer.split(",")[1]); // creates a thread with a random port
+//                        thread.start();
                         continue;
                     }
                     t = t1 - t0;
@@ -79,8 +79,8 @@ public class TCPClient {
                 }
             }
         }else  if (fromServer.split(",")[0].equals("accept")) {
-           TCPPeerClient thread = new TCPPeerClient(5558, fromServer.split(",")[1]); // creates a thread with a random port
-           thread.start();
+//           TCPPeerClient thread = new TCPPeerClient(5558, fromServer.split(",")[1]); // creates a thread with a random port
+//           thread.start();
        }else{
            System.out.println("No computer exist with IP address: " + address);
        }
