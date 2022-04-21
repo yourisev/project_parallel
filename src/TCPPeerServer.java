@@ -37,7 +37,7 @@ public class TCPPeerServer extends Thread {
         final int SOCKET_PORT = 13267;      // you may change this
         final String SERVER = "127.0.0.1";  // localhost
         final String
-                FILE_TO_RECEIVED = "C:\\Users\\Kouede Loic\\Desktop\\file3.txt";  // you may change this, I give a
+                FILE_TO_RECEIVED = "C:\\Users\\Kouede Loic\\OneDrive\\Desktop\\file3.txt";  // you may change this, I give a
         // different name because i don't want to
         // overwrite the one used by server...
 
@@ -49,27 +49,27 @@ public class TCPPeerServer extends Thread {
         fromClient = in.readLine();// initial receive from router (verification of connection)
         System.out.println("ServerRouter: " + fromClient);
 
-        // Set a timeout for waiting an answer from the server router
-        long start = System.currentTimeMillis();
-        long end = start + 30 * 1000;
         boolean foundDestination = false;
-        while (System.currentTimeMillis() < end) {
-            // Some expensive operation on the item.
-            if (in.readLine().equals(address)) {
+
+        boolean running = true;
+
+
+        // Communication while loop
+        while ((fromClient = in.readLine()) != null) {
+            System.out.println("Client said: " + fromClient);
+            if (fromClient.equals(address)) { // exit statement
                 foundDestination = true;
+                break;
             }
         }
 
-//        Thread t = new Thread(new LongRunningTask());
-//        Timer timer = new Timer();
-//        timer.schedule(new TimeOutTask(t, timer), 300*1000);
-//        t.start();
+        int bytesRead;
+        int current = 0;
+        FileOutputStream fos = null;
+        BufferedOutputStream bos = null;
 
         if (foundDestination) {
-            int bytesRead;
-            int current = 0;
-            FileOutputStream fos = null;
-            BufferedOutputStream bos = null;
+
             Socket sock = null;
             try {
                 sock = new Socket(address, SOCKET_PORT);
@@ -98,23 +98,7 @@ public class TCPPeerServer extends Thread {
                 if (bos != null) bos.close();
                 if (sock != null) sock.close();
             }
-       }
-
-//        while (Running){
-//            // Communication while loop
-//            while ((fromClient = in.readLine()) != null) {
-//                System.out.println("Client said: " + fromClient);
-//                if (fromClient.equals("Bye.")) // exit statement
-//                    break;
-//                else if(fromClient.split(",")[0].equals("accept")){
-//                    TCPPeerServer thread = new TCPPeerServer(5558, fromClient.split(",")[1]); // creates a thread with a random port
-//                    thread.start();
-//                    continue;
-//                }
-//                fromServer = fromClient.toUpperCase(); // converting received message to upper case
-//                System.out.println("Server said: " + fromServer);
-//                out.println(fromServer); // sending the converted message back to the Client via ServerRouter
-//            }}
+        }
 
 
         // closing connections and streams
@@ -123,66 +107,4 @@ public class TCPPeerServer extends Thread {
         in.close();
         Socket.close();
     }
-//    int SockNum; // port number
-//
-//    // Peer client machine's IP
-//    String peerClientIP;
-//
-//    PrintWriter out = null; // for writing to peer client
-//    BufferedReader in = null; // for reading from peer client
-//
-//    // Constructor
-//    TCPPeerServer(int sockNum, String clientIP) {
-//        SockNum = sockNum;
-//        peerClientIP = clientIP;
-//    }
-//
-//    // Run method (will run for each machine that connects to the peer server)
-//    public void run() {
-//        boolean running = true;
-//
-//        while (running) {
-//            try {
-//                ServerSocket serverSocket = new ServerSocket(SockNum);
-//                Socket clientSocket = serverSocket.accept();
-//                out = new PrintWriter(clientSocket.getOutputStream(), true);
-//                in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-//
-//
-//                // Variables for message passing
-//                String toPeerClient; // messages sent to peer client
-//                String fromPeerClient; // messages received from peer client
-//
-//                // Communication process (initial sends/receives)
-//                out.println(peerClientIP);// initial send (IP of the destination Client)
-//                fromPeerClient = in.readLine();// initial receive from router (verification of connection)
-//                System.out.println("Peer Client: " + fromPeerClient);
-//
-//                while ((fromPeerClient = in.readLine()) != null) {
-//                    System.out.println("Peer Client said: " + fromPeerClient);
-//                    if (fromPeerClient.equals("Bye.")) // exit statement
-//                        break;
-//                    toPeerClient = fromPeerClient.toUpperCase(); // converting received message to upper case
-//                    System.out.println("Peer Server said: " + toPeerClient);
-//                    out.println(toPeerClient); // sending the converted message back to the Client directly
-//                }
-//
-//
-//                // closing connections and streams
-//                System.out.println("Closing connections and streams");
-//                out.close();
-//                in.close();
-//                clientSocket.close();
-//                running = false;
-//
-//            } catch (UnknownHostException e) {
-//                System.err.println("Don't know about computer: " + peerClientIP);
-//                System.exit(1);
-//            } catch (IOException e) {
-//                System.err.println("Couldn't get I/O for the connection to: " + peerClientIP);
-//                System.exit(1);
-//            }
-//        }
-//
-//    }
 }
