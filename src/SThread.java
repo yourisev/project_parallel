@@ -43,18 +43,20 @@ public class SThread extends Thread {
                     while ((message = in.readLine()) != null) {
                         System.out.println("Server Router said: " + message);
                         String[] messageArray = message.split(",");
-                        if (searchDevice(messageArray[0], RTable, ind) == null) {
+                        Socket ingoingSocket = searchDevice(messageArray[0], RTable, ind);
+                        if (ingoingSocket == null) {
                             System.out.println("Destination: " + messageArray[0] + " not found");
                             System.out.println("Connection could not be established "); //+ routerName);
-                            outSocket = searchDevice(messageArray[1], RTable, ind);
-                            outTo = new PrintWriter(outSocket.getOutputStream(), true); // assigns a writer
-                            outTo.println("false," + outSocket.getInetAddress().getHostAddress());// Forward back unsuccessful message to next server router
+//                            outSocket = searchDevice(messageArray[1], RTable, ind);
+//                            outTo = new PrintWriter(outSocket.getOutputStream(), true); // assigns a writer
+//                            outTo.println("false," + outSocket.getInetAddress().getHostAddress());// Forward back unsuccessful message to next server router
                             continue;
                         }
-                        outTo.println("accept," + messageArray[1]);// Forward back connection message to server device
-                        outSocket = searchDevice(messageArray[1], RTable,ind);
+                        outSocket = ingoingSocket;
+                        //outTo.println("accept," + messageArray[1]);// Forward back connection message to server device
+                        //outSocket = searchDevice(messageArray[1], RTable,ind);
                         outTo = new PrintWriter(outSocket.getOutputStream(), true); // assigns a writer
-                        outTo.println("accept," + messageArray[0]);// Forward back unsuccessful message to next server router
+                        outTo.println(messageArray[1]);// Forward back unsuccessful message to next server router
 
                     }// end while
                 }
@@ -152,9 +154,9 @@ public class SThread extends Thread {
     public static Socket searchDevice(String ipAddress, Object[][] RoutingTable, int index) throws IOException {
         Socket outSocket = null;
         // loops through the routing table to find the device
-        for (int i = 1; i <= 10; i++) {
-//            System.out.println("Sthread - Index " + index);
-//            System.out.println("Ip address:" + RoutingTable[i][0] + "at index " + i);
+        for (int i = 0; i < 10; i++) {
+            System.out.println("Sthread - Index " + index);
+           System.out.println("Ip address:" + RoutingTable[i][0] + "at index " + i);
             if (ipAddress.equals(RoutingTable[i][0])) {
                 outSocket = (Socket) RoutingTable[i][1]; // gets the socket for communication from the table
 

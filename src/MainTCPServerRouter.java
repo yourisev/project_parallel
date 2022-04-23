@@ -12,8 +12,8 @@ public class MainTCPServerRouter {
         Object[][] RoutingTable = new Object[10][2]; // routing table Contains Socket and IP address as field
         int SockNum = 5555; // port number
         boolean Running = true;
-        int ind = 1; // index in the routing table
-        String currentRouterIP = "192.168.137.1", nextRouterIP = "192.168.137.138";
+        int ind = 0; // index in the routing table
+        String currentRouterIP = "192.168.137.1", nextRouterIP = "192.168.137.187";
 
         // Server Router machine's IP
         String routerName = "DESKTOP-0EN1VER";

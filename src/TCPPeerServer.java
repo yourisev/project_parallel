@@ -74,11 +74,8 @@ public class TCPPeerServer extends Thread {
             try {
                 sock = new Socket(address, SOCKET_PORT);
                 System.out.println("Connecting...");
-                String extension = FILE_TO_RECEIVED.substring(FILE_TO_RECEIVED.indexOf(".")+1);
-                if(extension.equals("txt")) {
+                //String extension = FILE_TO_RECEIVED.substring(FILE_TO_RECEIVED.indexOf(".")+1);
 
-                    // receive file
-                }else {
                     byte[] mybytearray = new byte[FILE_SIZE];
                     InputStream is = sock.getInputStream();
                     fos = new FileOutputStream(FILE_TO_RECEIVED);
@@ -96,7 +93,7 @@ public class TCPPeerServer extends Thread {
                     bos.flush();
                     System.out.println("File " + FILE_TO_RECEIVED
                             + " downloaded (" + current + " bytes read)");
-                }
+
             } finally {
                 if (fos != null) fos.close();
                 if (bos != null) bos.close();
