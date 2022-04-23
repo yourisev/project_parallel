@@ -46,7 +46,7 @@ public class SThread extends Thread {
                         Socket ingoingSocket = searchDevice(messageArray[0], RTable, ind);
                         if (ingoingSocket == null) {
                             System.out.println("Destination: " + messageArray[0] + " not found");
-                            System.out.println("Connection could not be established "); //+ routerName);
+                             System.out.println("Connection could not be established "); //+ routerName);
 //                            outSocket = searchDevice(messageArray[1], RTable, ind);
 //                            outTo = new PrintWriter(outSocket.getOutputStream(), true); // assigns a writer
 //                            outTo.println("false," + outSocket.getInetAddress().getHostAddress());// Forward back unsuccessful message to next server router
