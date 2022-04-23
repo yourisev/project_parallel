@@ -17,6 +17,10 @@ public class TCPPeerClient extends Thread {
         InetAddress addr = InetAddress.getLocalHost();
         String host = addr.getHostAddress();
 
+
+        final int FILE_SIZE = 6022386; // file size temporary hard coded
+        // should bigger than the file to be downloaded
+
         boolean running = true;
 
         // Client machine's IP
@@ -48,7 +52,7 @@ public class TCPPeerClient extends Thread {
 
 
         final int SOCKET_PORT = 13267;  // you may change this
-        final String FILE_TO_SEND = "C:\\Users\\Kouede Loic\\Desktop\\file.txt";  // you may change this
+        final String FILE_TO_BE_RECEIVED = "C:\\Users\\Kouede Loic\\Desktop\\file.txt";  // you may change this
 
         // Communication process (initial sends/receives
         out.println(address);// initial send (IP of the destination Server)
@@ -68,11 +72,15 @@ public class TCPPeerClient extends Thread {
 
         if (foundDestination) {
             System.out.println("Starting connection with " + address);
-            FileInputStream fis;
-            BufferedInputStream bis = null;
-            OutputStream os = null;
-            ServerSocket servsock = null;
+
+
+            int bytesRead;
+            int current = 0;
+            FileOutputStream fos = null;
+            BufferedOutputStream bos = null;
             Socket sock = null;
+            ServerSocket servsock = null;
+
             try {
                 servsock = new ServerSocket(SOCKET_PORT);
                 while (running) {
@@ -80,34 +88,48 @@ public class TCPPeerClient extends Thread {
                     try {
                         sock = servsock.accept();
                         System.out.println("Accepted connection : " + sock);
-                        // send file
-                        File myFile = new File(FILE_TO_SEND);
-                        byte[] mybytearray = new byte[(int) myFile.length()];
-                        fis = new FileInputStream(myFile);
-                        bis = new BufferedInputStream(fis);
-                        bis.read(mybytearray, 0, mybytearray.length);
-                        os = sock.getOutputStream();
-                        System.out.println("Sending " + FILE_TO_SEND + "(" + mybytearray.length + " bytes)");
-                        os.write(mybytearray, 0, mybytearray.length);
-                        os.flush();
-                        System.out.println("Done.");
+
+                        // receive file
+                        sock = new Socket(address, SOCKET_PORT);
+                        System.out.println("Connecting...");
+
+                        // receive file
+                        byte[] myBytearray = new byte[FILE_SIZE];
+                        InputStream is = sock.getInputStream();
+                        fos = new FileOutputStream(FILE_TO_BE_RECEIVED);
+                        bos = new BufferedOutputStream(fos);
+                        bytesRead = is.read(myBytearray, 0, myBytearray.length);
+                        current = bytesRead;
+
+                        do {
+                            bytesRead =
+                                    is.read(myBytearray, current, (myBytearray.length - current));
+                            if (bytesRead >= 0) current += bytesRead;
+                        } while (bytesRead > -1);
+
+                        bos.write(myBytearray, 0, current);
+                        bos.flush();
+                        System.out.println("File " + FILE_TO_BE_RECEIVED
+                                + " downloaded (" + current + " bytes read)");
                         running = false;
+
                     } finally {
-                        if (bis != null) bis.close();
-                        if (os != null) os.close();
+                        if (fos != null) fos.close();
+                        if (bos != null) bos.close();
                         if (sock != null) sock.close();
                     }
                 }
             } finally {
                 if (servsock != null) servsock.close();
             }
-        }
 
-        // closing connections
-        System.out.println("Closing connections");
-        out.close();
-        in.close();
-        Socket.close();
+
+            // closing connections
+            System.out.println("Closing connections");
+            out.close();
+            in.close();
+            Socket.close();
+        }
     }
 
 

@@ -41,8 +41,6 @@ public class TCPPeerServer extends Thread {
         // different name because i don't want to
         // overwrite the one used by server...
 
-        final int FILE_SIZE = 6022386; // file size temporary hard coded
-        // should bigger than the file to be downloaded
 
         // Communication process (initial sends/receives)
         out.println(address);// initial send (IP of the destination Client)
@@ -53,6 +51,7 @@ public class TCPPeerServer extends Thread {
 
         boolean running = true;
 
+        final String FILE_TO_SEND = "C:\\Users\\Kouede Loic\\Desktop\\file.txt";  // you may change this
 
         // Communication while loop
         System.out.println("Waiting for Server Router's response...");
@@ -65,43 +64,35 @@ public class TCPPeerServer extends Thread {
         }
 
 
-
         if (foundDestination) {
             System.out.println("Starting connection with " + address);
-            int bytesRead;
-            int current = 0;
-            FileOutputStream fos = null;
-            BufferedOutputStream bos = null;
+            FileInputStream fis;
+            BufferedInputStream bis = null;
+            OutputStream os = null;
             Socket sock = null;
+
+
             try {
                 sock = new Socket(address, SOCKET_PORT);
                 System.out.println("Connecting...");
-                String extension = FILE_TO_RECEIVED.substring(FILE_TO_RECEIVED.indexOf(".")+1);
-                if(extension.equals("txt")) {
 
-                    // receive file
-                }else {
-                    byte[] mybytearray = new byte[FILE_SIZE];
-                    InputStream is = sock.getInputStream();
-                    fos = new FileOutputStream(FILE_TO_RECEIVED);
-                    bos = new BufferedOutputStream(fos);
-                    bytesRead = is.read(mybytearray, 0, mybytearray.length);
-                    current = bytesRead;
 
-                    do {
-                        bytesRead =
-                                is.read(mybytearray, current, (mybytearray.length - current));
-                        if (bytesRead >= 0) current += bytesRead;
-                    } while (bytesRead > -1);
+                // send file
+                File myFile = new File(FILE_TO_SEND);
+                byte[] mybytearray = new byte[(int) myFile.length()];
+                fis = new FileInputStream(myFile);
+                bis = new BufferedInputStream(fis);
+                bis.read(mybytearray, 0, mybytearray.length);
+                os = sock.getOutputStream();
+                System.out.println("Sending " + FILE_TO_SEND + "(" + mybytearray.length + " bytes)");
+                os.write(mybytearray, 0, mybytearray.length);
+                os.flush();
+                System.out.println("Done.");
 
-                    bos.write(mybytearray, 0, current);
-                    bos.flush();
-                    System.out.println("File " + FILE_TO_RECEIVED
-                            + " downloaded (" + current + " bytes read)");
-                }
+
             } finally {
-                if (fos != null) fos.close();
-                if (bos != null) bos.close();
+                if (bis != null) bis.close();
+                if (os != null) os.close();
                 if (sock != null) sock.close();
             }
         }
