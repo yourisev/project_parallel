@@ -57,6 +57,7 @@ public class TCPPeerClient extends Thread {
 
         boolean foundDestination = false;
 
+        System.out.println("Waiting for Server Router's response...");
         while ((fromServer = in.readLine()) != null) {
             System.out.println("Server: " + fromServer);
             if (fromServer.equals(address)) { // exit statement
@@ -66,6 +67,7 @@ public class TCPPeerClient extends Thread {
         }
 
         if (foundDestination) {
+            System.out.println("Starting connection with " + address);
             FileInputStream fis;
             BufferedInputStream bis = null;
             OutputStream os = null;

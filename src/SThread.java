@@ -155,8 +155,8 @@ public class SThread extends Thread {
         Socket outSocket = null;
         // loops through the routing table to find the device
         for (int i = 0; i < 10; i++) {
-            System.out.println("Sthread - Index " + index);
-           System.out.println("Ip address:" + RoutingTable[i][0] + "at index " + i);
+//            System.out.println("Sthread - Index " + index);
+//            System.out.println("Ip address:" + RoutingTable[i][0] + "at index " + i);
             if (ipAddress.equals(RoutingTable[i][0])) {
                 outSocket = (Socket) RoutingTable[i][1]; // gets the socket for communication from the table
 

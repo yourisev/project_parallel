@@ -55,6 +55,7 @@ public class TCPPeerServer extends Thread {
 
 
         // Communication while loop
+        System.out.println("Waiting for Server Router's response...");
         while ((fromClient = in.readLine()) != null) {
             System.out.println("Client said: " + fromClient);
             if (fromClient.equals(address)) { // exit statement
@@ -63,19 +64,23 @@ public class TCPPeerServer extends Thread {
             }
         }
 
-        int bytesRead;
-        int current = 0;
-        FileOutputStream fos = null;
-        BufferedOutputStream bos = null;
+
 
         if (foundDestination) {
-
+            System.out.println("Starting connection with " + address);
+            int bytesRead;
+            int current = 0;
+            FileOutputStream fos = null;
+            BufferedOutputStream bos = null;
             Socket sock = null;
             try {
                 sock = new Socket(address, SOCKET_PORT);
                 System.out.println("Connecting...");
-                //String extension = FILE_TO_RECEIVED.substring(FILE_TO_RECEIVED.indexOf(".")+1);
+                String extension = FILE_TO_RECEIVED.substring(FILE_TO_RECEIVED.indexOf(".")+1);
+                if(extension.equals("txt")) {
 
+                    // receive file
+                }else {
                     byte[] mybytearray = new byte[FILE_SIZE];
                     InputStream is = sock.getInputStream();
                     fos = new FileOutputStream(FILE_TO_RECEIVED);
@@ -93,7 +98,7 @@ public class TCPPeerServer extends Thread {
                     bos.flush();
                     System.out.println("File " + FILE_TO_RECEIVED
                             + " downloaded (" + current + " bytes read)");
-
+                }
             } finally {
                 if (fos != null) fos.close();
                 if (bos != null) bos.close();
