@@ -68,7 +68,7 @@ public class TCPPeerServer extends Thread {
 
             try {
                 sock = new Socket(address, SOCKET_PORT);
-                System.out.println("Connecting...");
+                System.out.println("Connection established: " + sock);
 
 
                 // send file
