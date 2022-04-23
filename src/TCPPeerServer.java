@@ -41,11 +41,12 @@ public class TCPPeerServer extends Thread {
         fromClient = in.readLine();// initial receive from router (verification of connection)
         System.out.println("ServerRouter: " + fromClient);
 
-        boolean foundDestination = false;
 
         boolean running = true;
 
         final String FILE_TO_SEND = "C:\\Users\\Kouede Loic\\Desktop\\file.txt";  // you may change this
+
+        boolean foundDestination = false;
 
         // Communication while loop
         System.out.println("Waiting for Server Router's response...");

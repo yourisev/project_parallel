@@ -23,9 +23,9 @@ public class TCPPeerClient extends Thread {
 
         boolean running = true;
 
-        // Client machine's IP
         String routerName = "DESKTOP-72USF14";
         // ServerRouter host name
+
         int SockNum = 5555;
         // port number
 
