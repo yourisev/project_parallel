@@ -30,16 +30,10 @@ public class TCPPeerServer extends Thread {
         }
 
         // Variables for message passing
-        String fromServer; // messages sent to ServerRouter
         String fromClient; // messages received from ServerRouter
         String address = "192.168.137.210"; // destination IP (Client)--Modify
 
         final int SOCKET_PORT = 13267;      // you may change this
-        final String SERVER = "127.0.0.1";  // localhost
-        final String
-                FILE_TO_RECEIVED = "C:\\Users\\Kouede Loic\\OneDrive\\Desktop\\file3.txt";  // you may change this, I give a
-        // different name because i don't want to
-        // overwrite the one used by server...
 
 
         // Communication process (initial sends/receives)
@@ -56,7 +50,7 @@ public class TCPPeerServer extends Thread {
         // Communication while loop
         System.out.println("Waiting for Server Router's response...");
         while ((fromClient = in.readLine()) != null) {
-            System.out.println("Client said: " + fromClient);
+            System.out.println("server Router said: " + fromClient);
             if (fromClient.equals(address)) { // exit statement
                 foundDestination = true;
                 break;

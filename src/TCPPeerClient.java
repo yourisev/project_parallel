@@ -43,16 +43,13 @@ public class TCPPeerClient extends Thread {
         }
 
         // Variables for message passing
-        Reader reader = new FileReader("C:\\Users\\Kouede Loic\\Desktop\\file.txt");
-        BufferedReader fromFile = new BufferedReader(reader); // reader for the string file
         String fromServer; // messages received from ServerRouter
-        String fromUser; // messages sent to ServerRouter
-        String address = "192.168.137.131"; // destination IP (Server)---modify
+        String address = "192.168.137.210"; // destination IP (Server)---modify
         long t0, t1, t;
 
 
         final int SOCKET_PORT = 13267;  // you may change this
-        final String FILE_TO_BE_RECEIVED = "C:\\Users\\Kouede Loic\\Desktop\\file.txt";  // you may change this
+        final String FILE_TO_BE_RECEIVED = "C:\\Users\\Kouede Loic\\OneDrive\\Desktop\\file2.txt";  // you may change this
 
         // Communication process (initial sends/receives
         out.println(address);// initial send (IP of the destination Server)
@@ -63,7 +60,7 @@ public class TCPPeerClient extends Thread {
 
         System.out.println("Waiting for Server Router's response...");
         while ((fromServer = in.readLine()) != null) {
-            System.out.println("Server: " + fromServer);
+            System.out.println("Server Router said: " + fromServer);
             if (fromServer.equals(address)) { // exit statement
                 foundDestination = true;
                 break;
@@ -88,10 +85,6 @@ public class TCPPeerClient extends Thread {
                     try {
                         sock = servsock.accept();
                         System.out.println("Accepted connection : " + sock);
-
-                        // receive file
-                        sock = new Socket(address, SOCKET_PORT);
-                        System.out.println("Connecting...");
 
                         // receive file
                         byte[] myBytearray = new byte[FILE_SIZE];
