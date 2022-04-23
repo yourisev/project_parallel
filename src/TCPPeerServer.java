@@ -74,25 +74,29 @@ public class TCPPeerServer extends Thread {
             try {
                 sock = new Socket(address, SOCKET_PORT);
                 System.out.println("Connecting...");
+                String extension = FILE_TO_RECEIVED.substring(FILE_TO_RECEIVED.indexOf(".")+1);
+                if(extension.equals("txt")) {
 
-                // receive file
-                byte[] mybytearray = new byte[FILE_SIZE];
-                InputStream is = sock.getInputStream();
-                fos = new FileOutputStream(FILE_TO_RECEIVED);
-                bos = new BufferedOutputStream(fos);
-                bytesRead = is.read(mybytearray, 0, mybytearray.length);
-                current = bytesRead;
+                    // receive file
+                }else {
+                    byte[] mybytearray = new byte[FILE_SIZE];
+                    InputStream is = sock.getInputStream();
+                    fos = new FileOutputStream(FILE_TO_RECEIVED);
+                    bos = new BufferedOutputStream(fos);
+                    bytesRead = is.read(mybytearray, 0, mybytearray.length);
+                    current = bytesRead;
 
-                do {
-                    bytesRead =
-                            is.read(mybytearray, current, (mybytearray.length - current));
-                    if (bytesRead >= 0) current += bytesRead;
-                } while (bytesRead > -1);
+                    do {
+                        bytesRead =
+                                is.read(mybytearray, current, (mybytearray.length - current));
+                        if (bytesRead >= 0) current += bytesRead;
+                    } while (bytesRead > -1);
 
-                bos.write(mybytearray, 0, current);
-                bos.flush();
-                System.out.println("File " + FILE_TO_RECEIVED
-                        + " downloaded (" + current + " bytes read)");
+                    bos.write(mybytearray, 0, current);
+                    bos.flush();
+                    System.out.println("File " + FILE_TO_RECEIVED
+                            + " downloaded (" + current + " bytes read)");
+                }
             } finally {
                 if (fos != null) fos.close();
                 if (bos != null) bos.close();
