@@ -77,7 +77,7 @@ public class SThread extends Thread {
                     System.out.println("Thread interrupted");
                 }
 
-
+                long endTime,initTime = System.nanoTime();
                 //Search destination in routing table
                 outSocket = searchDevice(destination, RTable);
 
@@ -91,11 +91,42 @@ public class SThread extends Thread {
                 }else{
                     //Writing to Destination
                     //outSocket = searchDevice(destination, RTable,ind);
+                    endTime = System.nanoTime();
+                    System.out.println("Discovery Time: "+ (endTime-initTime) +" nS");
                     System.out.println("Found destination: " + destination);
                     outTo = new PrintWriter(outSocket.getOutputStream(), true); // assigns a writer
                     outTo.println(toTheClient.getInetAddress().getHostAddress());
                 }
 
+
+//                // loops through the routing table to find the destination
+//                for (int i = 0; i < 10; i++) {
+//                    if (destination.equals((String) RTable[i][0])) {
+//                        outSocket = (Socket) RTable[i][1]; // gets the socket for communication from the table
+//                        System.out.println("Found destination: " + destination);
+//                        outTo = new PrintWriter(outSocket.getOutputStream(), true); // assigns a writer
+//                    }
+//                }
+
+                //The below part was the communication loop now the communication will be direct
+//                while (running) {
+//                    // Communication loop
+//                    while ((inputLine = in.readLine()) != null) {
+//                        System.out.println("Client/Server said: " + inputLine);
+//                        if (inputLine.equals("Bye.")) // exit statement
+//                            break;
+//                        else if (inputLine.split(",")[0].equals("false")) {
+//                            outSocket = searchDevice(inputLine.split(",")[1], RTable,ind);
+//                            outTo = new PrintWriter(outSocket.getOutputStream(), true); // assigns a writer
+//                            inputLine = "false";
+//                        }
+//                        outputLine = inputLine; // passes the input from the machine to the output string for the destination
+//
+//                        if (outSocket != null) {
+//                            outTo.println(outputLine); // writes to the destination
+//                        }
+//                    }// end while
+//                }
             } // else
         }// end try
         catch (IOException e) {

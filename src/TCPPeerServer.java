@@ -14,7 +14,7 @@ public class TCPPeerServer extends Thread {
         BufferedReader in = null; // for reading form ServerRouter
         InetAddress addr = InetAddress.getLocalHost();
         String host = addr.getHostAddress(); // Server machine's IP
-        String routerName = "DESKTOP-72USF14";//"DESKTOP-0EN1VER"; // ServerRouter host name----Modify
+        String routerName = "DESKTOP-0EN1VER";//"DESKTOP-0EN1VER"; // ServerRouter host name----Modify
         int SockNum = 5555; // port number
         // Tries to connect to the ServerRouter
         try {
@@ -31,9 +31,9 @@ public class TCPPeerServer extends Thread {
 
         // Variables for message passing
         String fromClient; // messages received from ServerRouter
-        String address = "192.168.137.210"; // destination IP (Client)--Modify
+        String address = "192.168.137.187"; // destination IP (Client)--Modify
 
-        final int SOCKET_PORT = 13267;      // you may change this
+        final int SOCKET_PORT = 15000;      // you may change this
 
 
         // Communication process (initial sends/receives)
@@ -44,7 +44,7 @@ public class TCPPeerServer extends Thread {
 
         boolean running = true;
 
-        final String FILE_TO_SEND = "C:\\Users\\Kouede Loic\\Desktop\\file.txt";  // you may change this
+        final String FILE_TO_SEND = "C:\\Users\\seuga\\OneDrive\\Desktop\\CNN.png";  // you may change this
 
         boolean foundDestination = false;
 
@@ -80,6 +80,30 @@ public class TCPPeerServer extends Thread {
                 bis.read(mybytearray, 0, mybytearray.length);
                 os = sock.getOutputStream();
                 System.out.println("Sending " + FILE_TO_SEND + "(" + mybytearray.length + " bytes)");
+                //###
+
+                int start = 0;
+                int end =mybytearray.length;
+                int delta = mybytearray.length / 30;
+                int remainder = mybytearray.length % 30;
+                int count=1;
+                long initTime = System.nanoTime();
+                while(start != end){
+                    if(count!=31) {
+                        os.write(mybytearray, start, delta);//mybytearray.length
+                        start += delta;
+                        System.out.println("Part :" + (count++) + " sent");
+                    }else{
+                        delta = remainder;
+                        os.write(mybytearray, start, delta);
+                        start += delta;
+                        System.out.println("Part :" + (count++) + " sent");
+                    }
+                }
+                long endTime = System.nanoTime();
+                System.out.println("Transmission Time: "+ (endTime-initTime) +" nS");
+
+                //##33
                 os.write(mybytearray, 0, mybytearray.length);
                 os.flush();
                 System.out.println("Done.");
