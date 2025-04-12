@@ -7,7 +7,7 @@ public class TCPServer {
     public static void main(String[] args) throws IOException {
         // Variables for setting up connection and communication
         // socket to connect with ServerRouter
-        Socket Socket = null; //---add Ip and port
+        Socket socket = null; //---add Ip and port
         PrintWriter out = null; // for writing to ServerRouter
         BufferedReader in = null; // for reading form ServerRouter
         InetAddress addr = InetAddress.getLocalHost();
@@ -17,9 +17,9 @@ public class TCPServer {
         int SockNum = 5555; // port number
         // Tries to connect to the ServerRouter
         try {
-            Socket = new Socket(routerName, SockNum);
-            out = new PrintWriter(Socket.getOutputStream(), true);
-            in = new BufferedReader(new InputStreamReader(Socket.getInputStream()));
+            socket = new socket(routerName, SockNum);
+            out = new PrintWriter(socket.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         } catch (UnknownHostException e) {
             System.err.println("Don't know about router: " + routerName);
             System.exit(1);
@@ -59,6 +59,6 @@ public class TCPServer {
         // closing connections and streams
         out.close();
         in.close();
-        Socket.close();
+        socket.close();
     }
 }

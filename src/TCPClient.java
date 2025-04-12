@@ -7,7 +7,7 @@ public class TCPClient {
     public static void main(String[] args) throws IOException {
 
         // Variables for setting up connection and communication
-        Socket Socket = null;
+        Socket socket = null;
         // socket to connect with ServerRouter
         PrintWriter out = null;
         // for writing to ServerRouter
@@ -26,9 +26,9 @@ public class TCPClient {
 
         // Tries to connect to the ServerRouter
         try {
-            Socket = new Socket(routerName, SockNum);
-            out = new PrintWriter(Socket.getOutputStream(), true);
-            in = new BufferedReader(new InputStreamReader(Socket.getInputStream()));
+            socket = new Socket(routerName, SockNum);
+            out = new PrintWriter(socket.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         } catch (UnknownHostException e) {
             System.err.println("Don't know about router: " + routerName);
             System.exit(1);
@@ -82,12 +82,12 @@ public class TCPClient {
 //           TCPPeerClient thread = new TCPPeerClient(5558, fromServer.split(",")[1]); // creates a thread with a random port
 //           thread.start();
        }else{
-           System.out.println("No computer exist with IP address: " + address);
+           System.out.println("No computer exists with IP address: " + address);
        }
 
         // closing connections
         out.close();
         in.close();
-        Socket.close();
+        socket.close();
     }
 }
