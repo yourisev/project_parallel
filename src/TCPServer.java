@@ -17,7 +17,7 @@ public class TCPServer {
         int SockNum = 5555; // port number
         // Tries to connect to the ServerRouter
         try {
-            socket = new socket(routerName, SockNum);
+            socket = new Socket(routerName, SockNum);
             out = new PrintWriter(socket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         } catch (UnknownHostException e) {
