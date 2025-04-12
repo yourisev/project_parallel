@@ -8,7 +8,7 @@ public class TCPPeerClient extends Thread {
     public static void main(String[] args) throws IOException {
 
         // Variables for setting up connection and communication
-        Socket Socket = null;
+        Socket socket = null;
         // socket to connect with ServerRouter
         PrintWriter out = null;
         // for writing to ServerRouter
@@ -32,9 +32,9 @@ public class TCPPeerClient extends Thread {
 
         // Tries to connect to the ServerRouter
         try {
-            Socket = new Socket(routerName, SockNum);
-            out = new PrintWriter(Socket.getOutputStream(), true);
-            in = new BufferedReader(new InputStreamReader(Socket.getInputStream()));
+            socket = new Socket(routerName, SockNum);
+            out = new PrintWriter(socket.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         } catch (UnknownHostException e) {
             System.err.println("Don't know about router: " + routerName);
             System.exit(1);
@@ -122,7 +122,7 @@ public class TCPPeerClient extends Thread {
             System.out.println("Closing connections");
             out.close();
             in.close();
-            Socket.close();
+            socket.close();
         //}
     }
 
