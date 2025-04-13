@@ -17,16 +17,11 @@ public class TCPPeerClient extends Thread {
         InetAddress addr = InetAddress.getLocalHost();
         String host = addr.getHostAddress();
 
-
-        final int FILE_SIZE = 6022386; // file size temporary hard coded
-        // should bigger than the file to be downloaded
-
         boolean running = true;
 
-        String routerName = /*"DESKTOP-72USF14";*/"DESKTOP-0EN1VER";
-
+        // Client machine's IP
+        String routerName = "DESKTOP-72USF14";
         // ServerRouter host name
-
         int SockNum = 5555;
         // port number
 
@@ -44,41 +39,38 @@ public class TCPPeerClient extends Thread {
         }
 
         // Variables for message passing
+        Reader reader = new FileReader("C:\\Users\\Kouede Loic\\Desktop\\file.txt");
+        BufferedReader fromFile = new BufferedReader(reader); // reader for the string file
         String fromServer; // messages received from ServerRouter
-        String address = "192.168.137.1"; // destination IP (Server)---modify
+        String fromUser; // messages sent to ServerRouter
+        String address = "192.168.137.131"; // destination IP (Server)---modify
         long t0, t1, t;
 
 
-        final int SOCKET_PORT = 15000;  // you may change this
-        final String FILE_TO_BE_RECEIVED = "C:\\Users\\Kouede Loic\\OneDrive\\Desktop\\file2.png";  // you may change this
+        final int SOCKET_PORT = 13267;  // you may change this
+        final String FILE_TO_SEND = "C:\\Users\\Kouede Loic\\Desktop\\file.txt";  // you may change this
 
         // Communication process (initial sends/receives
         out.println(address);// initial send (IP of the destination Server)
         fromServer = in.readLine();//initial receive from router (verification of connection)
         System.out.println("ServerRouter: " + fromServer);
 
-//        boolean foundDestination = false;
-//
-//        System.out.println("Waiting for Server Router's response...");
-//        while ((fromServer = in.readLine()) != null) {
-//            System.out.println("Server Router said: " + fromServer);
-//            if (fromServer.equals(address)) { // exit statement
-//                foundDestination = true;
-//                break;
-//            }
-//        }
+        boolean foundDestination = false;
 
-        //if (foundDestination) {
-            System.out.println("Starting connection with " + address);
+        while ((fromServer = in.readLine()) != null) {
+            System.out.println("Server: " + fromServer);
+            if (fromServer.equals(address)) { // exit statement
+                foundDestination = true;
+                break;
+            }
+        }
 
-
-            int bytesRead;
-            int current = 0;
-            FileOutputStream fos = null;
-            BufferedOutputStream bos = null;
-            Socket sock = null;
+        if (foundDestination) {
+            FileInputStream fis;
+            BufferedInputStream bis = null;
+            OutputStream os = null;
             ServerSocket servsock = null;
-
+            Socket sock = null;
             try {
                 servsock = new ServerSocket(SOCKET_PORT);
                 while (running) {
@@ -86,44 +78,34 @@ public class TCPPeerClient extends Thread {
                     try {
                         sock = servsock.accept();
                         System.out.println("Accepted connection : " + sock);
-
-                        // receive file
-                        byte[] myBytearray = new byte[FILE_SIZE];
-                        InputStream is = sock.getInputStream();
-                        fos = new FileOutputStream(FILE_TO_BE_RECEIVED);
-                        bos = new BufferedOutputStream(fos);
-                        bytesRead = is.read(myBytearray, 0, myBytearray.length);
-                        current = bytesRead;
-
-                        do {
-                            bytesRead =
-                                    is.read(myBytearray, current, (myBytearray.length - current));
-                            if (bytesRead >= 0) current += bytesRead;
-                        } while (bytesRead > -1);
-
-                        bos.write(myBytearray, 0, current);
-                        bos.flush();
-                        System.out.println("File " + FILE_TO_BE_RECEIVED
-                                + " downloaded (" + current + " bytes read)");
+                        // send file
+                        File myFile = new File(FILE_TO_SEND);
+                        byte[] mybytearray = new byte[(int) myFile.length()];
+                        fis = new FileInputStream(myFile);
+                        bis = new BufferedInputStream(fis);
+                        bis.read(mybytearray, 0, mybytearray.length);
+                        os = sock.getOutputStream();
+                        System.out.println("Sending " + FILE_TO_SEND + "(" + mybytearray.length + " bytes)");
+                        os.write(mybytearray, 0, mybytearray.length);
+                        os.flush();
+                        System.out.println("Done.");
                         running = false;
-
                     } finally {
-                        if (fos != null) fos.close();
-                        if (bos != null) bos.close();
+                        if (bis != null) bis.close();
+                        if (os != null) os.close();
                         if (sock != null) sock.close();
                     }
                 }
             } finally {
                 if (servsock != null) servsock.close();
             }
+        }
 
-
-            // closing connections
-            System.out.println("Closing connections");
-            out.close();
-            in.close();
-            socket.close();
-        //}
+        // closing connections
+        System.out.println("Closing connections");
+        out.close();
+        in.close();
+        socket.close();
     }
 
 
