@@ -1,9 +1,7 @@
 import java.io.*;
 import java.net.InetAddress;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Timer;
 
 public class TCPPeerServer extends Thread {
     public static void main(String[] args) throws IOException {
