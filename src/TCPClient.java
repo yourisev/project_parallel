@@ -1,5 +1,3 @@
-
-
 import java.io.*;
 import java.net.*;
 
@@ -7,7 +5,7 @@ public class TCPClient {
     public static void main(String[] args) throws IOException {
 
         // Variables for setting up connection and communication
-        Socket Socket = null;
+        Socket socket = null;
         // socket to connect with ServerRouter
         PrintWriter out = null;
         // for writing to ServerRouter
@@ -26,9 +24,9 @@ public class TCPClient {
 
         // Tries to connect to the ServerRouter
         try {
-            Socket = new Socket(routerName, SockNum);
-            out = new PrintWriter(Socket.getOutputStream(), true);
-            in = new BufferedReader(new InputStreamReader(Socket.getInputStream()));
+            socket = new Socket(routerName, SockNum);
+            out = new PrintWriter(socket.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         } catch (UnknownHostException e) {
             System.err.println("Don't know about router: " + routerName);
             System.exit(1);
@@ -63,8 +61,8 @@ public class TCPClient {
                         break;
 
                     else if(fromServer.split(",")[0].equals("accept")){
-                        PeerServerThread thread = new PeerServerThread(5558, fromServer.split(",")[1]); // creates a thread with a random port
-                        thread.start();
+//                        TCPPeerServer thread = new TCPPeerServer(5558, fromServer.split(",")[1]); // creates a thread with a random port
+//                        thread.start();
                         continue;
                     }
                     t = t1 - t0;
@@ -79,8 +77,8 @@ public class TCPClient {
                 }
             }
         }else  if (fromServer.split(",")[0].equals("accept")) {
-           PeerClientThread thread = new PeerClientThread(5558, fromServer.split(",")[1]); // creates a thread with a random port
-           thread.start();
+//           TCPPeerClient thread = new TCPPeerClient(5558, fromServer.split(",")[1]); // creates a thread with a random port
+//           thread.start();
        }else{
            System.out.println("No computer exists with IP address: " + address);
        }
@@ -88,6 +86,6 @@ public class TCPClient {
         // closing connections
         out.close();
         in.close();
-        Socket.close();
+        socket.close();
     }
 }
